@@ -5,6 +5,7 @@ public class DelegationExample {
         Customer c = new Customer();
         Payment creditCard = new CreditCardPayment();
         Payment cash = new CashPayment();
+
         c.makePayment(creditCard);  // Payment is delegated to Payment object
         c.makePayment(cash);
 
@@ -16,6 +17,8 @@ class Customer {
         payment.pay();
     }
 
+    // The following methods are not recommended because you will need to MODIFY this class
+    // whenever there is a new payment method
     void makeCreditCardPayment() {
         System.out.println("Credit Card is used");
     }
@@ -25,6 +28,7 @@ class Customer {
     }
 }
 
+// In future, any new payment can simply implements Payment interface
 class ApplePayPayment implements Payment {
     @Override
     public void pay() {

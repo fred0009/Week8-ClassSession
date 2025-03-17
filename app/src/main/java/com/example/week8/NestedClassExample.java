@@ -25,6 +25,7 @@ class OuterClass {
         private int d = 40;
 
         InnerClass() {
+            // This shows that inner class can access attributes of outer class.
             System.out.println("Inner Class is created");
             System.out.println(a);
             System.out.println(b);
