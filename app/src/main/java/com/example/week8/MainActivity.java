@@ -3,6 +3,7 @@ package com.example.week8;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
         // Use the data
         tv.setText(textFromSubActivityPage);
+        
+        // Implicit Intent Example
+        Button btnMAP = findViewById(R.id.btnMAP);
+        btnMAP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String location = "SUTD";
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme( "geo" ).opaquePart( "0.0" ).appendQueryParameter( "q" ,location);
+                Uri geoLocation = builder.build();
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(geoLocation);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
+            }
+        });
 
     }
 }
