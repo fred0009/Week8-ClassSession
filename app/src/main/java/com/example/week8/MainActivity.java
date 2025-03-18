@@ -2,7 +2,9 @@ package com.example.week8;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,8 +22,21 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv.setText("INFOSYS!!!");
+//                tv.setText("INFOSYS!!!");
+//                Log.d("Pokemon", "onClick: a button is clicked!!");
+
+                // Use intent to go to subactivity page
+                Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                startActivity(intent);
             }
         });
+
+        // Get the data from intent
+        Intent intent = getIntent();
+        String textFromSubActivityPage = intent.getStringExtra(SubActivity.SUBACTIVITY_KEY);
+
+        // Use the data
+        tv.setText(textFromSubActivityPage);
+
     }
 }
