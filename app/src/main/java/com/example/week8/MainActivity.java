@@ -3,6 +3,7 @@ package com.example.week8;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,13 +12,32 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private final String sharedPrefFile = "com.example.android.myapplication" ;
+    public static final String KEY = "MyKey" ;
+    SharedPreferences mPreferences;
+    TextView tv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Infosys", "onCreate: is here");
         setContentView(R.layout.activity_main);
-        TextView tv = findViewById(R.id.SecondText);
-        tv.setText("Wow");
+        
+        // Initiate sharedPreferences
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        String aText = mPreferences.getString(KEY, "Default Value");
+        
+        tv = findViewById(R.id.SecondText);
+        tv.setText(aText);
+
+        // Get the data from intent
+        Intent intent = getIntent();
+        String textFromSubActivityPage = intent.getStringExtra(SubActivity.SUBACTIVITY_KEY);
+        if (textFromSubActivityPage != null) {
+        // Use the data
+        tv.setText(textFromSubActivityPage);
+        }
 
         Button btn = findViewById(R.id.btnChangeText);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -32,12 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Get the data from intent
-        Intent intent = getIntent();
-        String textFromSubActivityPage = intent.getStringExtra(SubActivity.SUBACTIVITY_KEY);
 
-        // Use the data
-        tv.setText(textFromSubActivityPage);
         
         // Implicit Intent Example
         Button btnMAP = findViewById(R.id.btnMAP);
@@ -58,5 +73,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Infosys", "onStart is triggered");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("Infosys", "onPause is triggered ");
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putString(KEY, tv.getText().toString());
+        preferencesEditor.apply();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Infosys", "onDestroy is triggered ");
     }
 }
